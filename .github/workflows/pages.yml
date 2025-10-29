@@ -78,67 +78,78 @@ jobs:
           PY
 
           cat > storage/db.py <<'PY'
-          from sqlalchemy import create_engine, Integer, String, Text
-          from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+                    cat > storage/db.py <<'PY'
           from pathlib import Path
+          from sqlalchemy import create_engine, Column, Integer, String, Text
+          from sqlalchemy.orm import declarative_base, sessionmaker
+
           DB_PATH = Path(__file__).parent / "wakefield.db"
           engine = create_engine(f"sqlite:///{DB_PATH}", future=True, echo=False)
-          class Base(DeclarativeBase): pass
+
+          Base = declarative_base()
+
           class Meeting(Base):
               __tablename__ = "meetings"
-              id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-              source: Mapped[str] = mapped_column(String(80))
-              committee: Mapped[str] = mapped_column(String(255))
-              title: Mapped[str] = mapped_column(String(500))
-              start_time: Mapped[str] = mapped_column(String(64))
-              location: Mapped[str] = mapped_column(String(255), default="")
-              url: Mapped[str] = mapped_column(Text)
-              published: Mapped[str] = mapped_column(String(64), default="")
+              id = Column(Integer, primary_key=True, autoincrement=True)
+              source = Column(String(80))
+              committee = Column(String(255))
+              title = Column(String(500))
+              start_time = Column(String(64))
+              location = Column(String(255), default="")
+              url = Column(Text)
+              published = Column(String(64), default="")
+
           class Consultation(Base):
               __tablename__ = "consultations"
-              id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-              title: Mapped[str] = mapped_column(String(500))
-              closes: Mapped[str] = mapped_column(String(64), default="")
-              category: Mapped[str] = mapped_column(String(255), default="")
-              url: Mapped[str] = mapped_column(Text)
-              source: Mapped[str] = mapped_column(String(80))
+              id = Column(Integer, primary_key=True, autoincrement=True)
+              title = Column(String(500))
+              closes = Column(String(64), default="")
+              category = Column(String(255), default="")
+              url = Column(Text)
+              source = Column(String(80))
+
           class PlanningApplication(Base):
               __tablename__ = "planning_applications"
-              id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-              reference: Mapped[str] = mapped_column(String(64))
-              address: Mapped[str] = mapped_column(String(500))
-              description: Mapped[str] = mapped_column(Text)
-              received_date: Mapped[str] = mapped_column(String(64), default="")
-              ward: Mapped[str] = mapped_column(String(255), default="")
-              status: Mapped[str] = mapped_column(String(100), default="")
-              url: Mapped[str] = mapped_column(Text)
+              id = Column(Integer, primary_key=True, autoincrement=True)
+              reference = Column(String(64))
+              address = Column(String(500))
+              description = Column(Text)
+              received_date = Column(String(64), default="")
+              ward = Column(String(255), default="")
+              status = Column(String(100), default="")
+              url = Column(Text)
+
           class OrderNotice(Base):
               __tablename__ = "orders_notices"
-              id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-              order_type: Mapped[str] = mapped_column(String(64))
-              title: Mapped[str] = mapped_column(String(500))
-              ward: Mapped[str] = mapped_column(String(255), default="")
-              url: Mapped[str] = mapped_column(Text)
-              open_date: Mapped[str] = mapped_column(String(64), default="")
-              close_date: Mapped[str] = mapped_column(String(64), default="")
+              id = Column(Integer, primary_key=True, autoincrement=True)
+              order_type = Column(String(64))
+              title = Column(String(500))
+              ward = Column(String(255), default="")
+              url = Column(Text)
+              open_date = Column(String(64), default="")
+              close_date = Column(String(64), default="")
+
           class CrimeStat(Base):
               __tablename__ = "crime_stats"
-              id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-              point_key: Mapped[str] = mapped_column(String(100))
-              category: Mapped[str] = mapped_column(String(100))
-              month: Mapped[str] = mapped_column(String(7))
-              count: Mapped[int] = mapped_column(Integer)
+              id = Column(Integer, primary_key=True, autoincrement=True)
+              point_key = Column(String(100))
+              category = Column(String(100))
+              month = Column(String(7))
+              count = Column(Integer)
+
           class FloodAlert(Base):
               __tablename__ = "flood_alerts"
-              id: Mapped[int] = mapped_column(Integer, primary key=True, autoincrement=True)
-              ta_code: Mapped[str] = mapped_column(String(32))
-              area_name: Mapped[str] = mapped_column(String(255))
-              severity: Mapped[str] = mapped_column(String(64))
-              message: Mapped[str] = mapped_column(Text)
-              timeRaised: Mapped[str] = mapped_column(String(64))
+              id = Column(Integer, primary_key=True, autoincrement=True)
+              ta_code = Column(String(32))
+              area_name = Column(String(255))
+              severity = Column(String(64))
+              message = Column(Text)
+              timeRaised = Column(String(64))
+
           def get_session():
               Base.metadata.create_all(engine)
               return sessionmaker(engine, expire_on_commit=False)()
+          PY
           PY
 
           # Connectors (with headers + timeouts)
