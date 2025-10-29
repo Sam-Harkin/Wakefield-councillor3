@@ -150,7 +150,6 @@ jobs:
               Base.metadata.create_all(engine)
               return sessionmaker(engine, expire_on_commit=False)()
           PY
-          PY
 
           # Connectors (with headers + timeouts)
           cat > connectors/_session.py <<'PY'
